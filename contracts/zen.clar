@@ -1,4 +1,4 @@
-;; ZenithID: Advanced Decentralized Identity Management on Stacks
+;; Zen: Advanced Decentralized Identity Management on Stacks
 ;; A cutting-edge identity verification and claim management system
 
 ;; Contract Deployer: The sovereign address with administrative privileges
@@ -199,6 +199,18 @@
   )
 )
 
+
+;; Verifies if a specific attestation has been endorsed
+;; @param persona - Persona's blockchain address
+;; @param attestation - Specific claim to verify
+;; @returns Boolean endorsement status
+(define-read-only (is-attestation-endorsed (persona principal) (attestation (string-ascii 200)))
+  (match (map-get? attestation-ledger { persona: persona, attestation: attestation })
+    ledger-entry (get verified ledger-entry)
+    false
+  )
+)
+
 ;; Retrieves complete persona profile
 ;; @param persona - Target persona's address
 ;; @returns Optional persona data structure
@@ -212,6 +224,16 @@
 (define-read-only (retrieve-attestations (persona principal))
   (match (map-get? digital-personas persona)
     persona-data (ok (get attestations persona-data))
+    (err ERR-PERSONA-NOT-REGISTERED)
+  )
+)
+
+;; Determines if a persona has achieved validation status
+;; @param persona - Target persona's address
+;; @returns Boolean validation status or error
+(define-read-only (is-persona-validated (persona principal))
+  (match (map-get? digital-personas persona)
+    persona-data (ok (get is-validated persona-data))
     (err ERR-PERSONA-NOT-REGISTERED)
   )
 )
