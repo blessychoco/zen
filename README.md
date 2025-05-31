@@ -1,4 +1,4 @@
-# 🚀 ZenithID - Advanced Decentralized Identity Management
+# 🚀 Zenith - Advanced Decentralized Identity Management
 
 > **The pinnacle of decentralized identity management on the Stacks blockchain**
 
